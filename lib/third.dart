@@ -178,25 +178,42 @@ class _thirdState extends State<third> {
                 Padding(padding: EdgeInsets.only(top: 15)),
                 InkWell(
                     onTap: () async {
-                      String name = t1.text;
-                      String number = t2.text;
-                      String email = t3.text;
-                      String password = t4.text;
-                      String count = currentCountry!;
-                      String qry = "insert into Test values(null,'$name','$number','$email','$password','$count')";
-                      print(qry);
-                      int r_id;
-                      r_id = await widget.database!.rawInsert(qry);
-                      print(" row_id= $r_id");
-                      t1.text = "";
-                      t2.text = "";
-                      t3.text = "";
-                      t4.text = "";
-                      selectCountry = currentCountry!;
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) {
-                        return fourth(widget.database);
-                      },));
+                      try{
+                        String name = t1.text;
+                        String number = t2.text;
+                        String email = t3.text;
+                        String password = t4.text;
+                        String count = currentCountry!;
+                        String qry = "insert into Test values(null,'$name','$number','$email','$password','$count')";
+                        print(qry);
+                        int r_id;
+                        r_id = await widget.database!.rawInsert(qry);
+                        print(" row_id= $r_id");
+                        t1.text = "";
+                        t2.text = "";
+                        t3.text = "";
+                        t4.text = "";
+                        selectCountry = currentCountry!;
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) {
+                          return fourth(widget.database);
+                        },));
+                      }
+                      catch(val){
+                        showDialog(context: context, builder: (context) {
+                          return AlertDialog(
+                            title: Text("Error"),
+                            content: Text("Null check operator used on a null value"),
+                            actions: [Padding(
+                              padding: const EdgeInsets.all(1.0),
+                              child: IconButton(onPressed: () {
+                                Navigator.pop(context);
+
+                              }, icon: Icon(Icons.close,color: Colors.red,)),
+                            )],
+                          );
+                        },);
+                      }
                     },
                     child: Ink(
                       height: 60,
@@ -240,5 +257,6 @@ class _thirdState extends State<third> {
               ],
             ))),)
     );
-  }
+    }
 }
+
